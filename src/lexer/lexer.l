@@ -19,6 +19,13 @@
 "bool" {
     return BOOL;
 }
+"true" {
+    return TRUE;
+}
+
+"false" {
+    return FALSE;
+}
 
 [0-9]+\.[0-9]+ {
     return NUMBER;

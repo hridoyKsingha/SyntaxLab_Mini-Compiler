@@ -5,7 +5,7 @@ int yylex(void);
 void yyerror(const char *s);
 %}
 
-%token INT FLOAT BOOL NUMBER IDENTIFIER
+%token INT FLOAT BOOL NUMBER IDENTIFIER TRUE FALSE
 
 %%
 
@@ -48,6 +48,8 @@ term:
 factor:
     NUMBER
     | IDENTIFIER
+    | TRUE
+    | FALSE
     | '(' expression ')'
     ;
 
