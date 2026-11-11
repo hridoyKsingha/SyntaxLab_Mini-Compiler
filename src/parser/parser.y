@@ -1,3 +1,4 @@
+
 %{
 #include <stdio.h>
 int yylex(void);
@@ -9,14 +10,37 @@ void yyerror(const char *s);
 %%
 
 program:
+    statement_list
+    ;
+
+statement_list:
     statement
+    | statement_list statement
     ;
 
 statement:
-    INT IDENTIFIER '=' NUMBER ';'
+    INT IDENTIFIER '=' expression ';'
     {
         printf("Valid Declaration!\n");
     }
+    ;
+
+expression:
+    expression '+' term
+    | expression '-' term
+    | term
+    ;
+
+term:
+    term '*' factor
+    | term '/' factor
+    | factor
+    ;
+
+factor:
+    NUMBER
+    | IDENTIFIER
+    | '(' expression ')'
     ;
 
 %%
