@@ -1,3 +1,4 @@
+
 %{
 #include <stdio.h>
 #include "../parser/parser.tab.h"
@@ -9,6 +10,18 @@
 
 "int" {
     return INT;
+}
+
+"float" {
+    return FLOAT;
+}
+
+"bool" {
+    return BOOL;
+}
+
+[0-9]+\.[0-9]+ {
+    return NUMBER;
 }
 
 [0-9]+ {

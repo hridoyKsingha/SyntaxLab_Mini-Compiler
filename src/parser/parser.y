@@ -5,7 +5,7 @@ int yylex(void);
 void yyerror(const char *s);
 %}
 
-%token INT NUMBER IDENTIFIER
+%token INT FLOAT BOOL NUMBER IDENTIFIER
 
 %%
 
@@ -21,7 +21,15 @@ statement_list:
 statement:
     INT IDENTIFIER '=' expression ';'
     {
-        printf("Valid Declaration!\n");
+        printf("Valid Integer Declaration!\n");
+    }
+    | FLOAT IDENTIFIER '=' expression ';'
+    {
+        printf("Valid Float Declaration!\n");
+    }
+    | BOOL IDENTIFIER '=' expression ';'
+    {
+        printf("Valid Boolean Declaration!\n");
     }
     ;
 
