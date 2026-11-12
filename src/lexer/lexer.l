@@ -27,6 +27,19 @@
     return FALSE;
 }
 
+"&&" {
+    return AND;
+}
+
+"||" {
+    return OR;
+}
+
+"!" {
+    return NOT;
+}
+
+
 "==" {
     return EQ;
 }

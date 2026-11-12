@@ -6,7 +6,7 @@ void yyerror(const char *s);
 %}
 
 %token INT FLOAT BOOL NUMBER IDENTIFIER TRUE FALSE
-%token EQ NE GE LE
+%token EQ NE GE LE AND OR NOT
 
 %%
 
@@ -35,8 +35,27 @@ statement:
     ;
 
 expression:
-    arithmetic_expression
-    | arithmetic_expression relational_operator arithmetic_expression
+    logical_expression
+    ;
+
+logical_expression:
+    logical_expression OR logical_term
+    | logical_term
+    ;
+
+logical_term:
+    logical_term AND unary_expression
+    | unary_expression
+    ;
+
+unary_expression:
+    NOT unary_expression
+    | relational_expression
+    ;
+
+relational_expression:
+    arithmetic_expression relational_operator arithmetic_expression
+    | arithmetic_expression
     ;
 
 relational_operator:
