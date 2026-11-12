@@ -27,6 +27,31 @@
     return FALSE;
 }
 
+"==" {
+    return EQ;
+}
+
+"!=" {
+    return NE;
+}
+
+">=" {
+    return GE;
+}
+
+"<=" {
+    return LE;
+}
+
+">" {
+    return '>';
+}
+
+"<" {
+    return '<';
+}
+
+
 [0-9]+\.[0-9]+ {
     return NUMBER;
 }
