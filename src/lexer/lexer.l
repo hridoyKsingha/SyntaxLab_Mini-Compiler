@@ -1,6 +1,9 @@
 
 %{
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "../ast/ast.h"
 #include "../parser/parser.tab.h"
 %}
 
@@ -19,6 +22,7 @@
 "bool" {
     return BOOL;
 }
+
 "true" {
     return TRUE;
 }
@@ -26,19 +30,6 @@
 "false" {
     return FALSE;
 }
-
-"&&" {
-    return AND;
-}
-
-"||" {
-    return OR;
-}
-
-"!" {
-    return NOT;
-}
-
 
 "==" {
     return EQ;
@@ -56,25 +47,43 @@
     return LE;
 }
 
-">" {
-    return '>';
+"&&" {
+    return AND;
 }
 
-"<" {
-    return '<';
+"||" {
+    return OR;
 }
 
+"!" {
+    return NOT;
+}
 
 [0-9]+\.[0-9]+ {
+    yylval.text = strdup(yytext);
     return NUMBER;
 }
 
 [0-9]+ {
+    yylval.text = strdup(yytext);
     return NUMBER;
 }
 
 [a-zA-Z_][a-zA-Z0-9_]* {
+    yylval.text = strdup(yytext);
     return IDENTIFIER;
+}
+
+"+"|"-"|"*"|"/" {
+    return yytext[0];
+}
+
+">"|"<"|"="|"("|")"|";" {
+    return yytext[0];
+}
+
+"//".* {
+    /* Ignore single-line comments */
 }
 
 [ \t\n]+ {
@@ -82,7 +91,7 @@
 }
 
 . {
-    return yytext[0];
+    printf("UNKNOWN: %s\n", yytext);
 }
 
 %%
