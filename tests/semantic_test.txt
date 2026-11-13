@@ -1,0 +1,4 @@
+int age = 25;
+int total = age + 5;
+int result = unknown + 10;
+int age = 30;

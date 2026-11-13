@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ast.h"
+#include "../semantic/semantic.h"
+#include "../symbol_table/symbol_table.h"
 
 int yylex(void);
 void yyerror(const char *s);
@@ -32,6 +34,11 @@ program:
         printf("\n========== ABSTRACT SYNTAX TREE ==========\n");
         ast_print($1);
         printf("==========================================\n");
+
+        symbol_table_print();
+
+        printf("\nSemantic Errors: %d\n",
+               semantic_error_count());
     }
     ;
 
@@ -50,16 +57,19 @@ statement:
     INT IDENTIFIER '=' expression ';'
     {
         $$ = ast_declaration("int", $2, $4);
+        semantic_declare($2, "int");
         free($2);
     }
     | FLOAT IDENTIFIER '=' expression ';'
     {
         $$ = ast_declaration("float", $2, $4);
+        semantic_declare($2, "float");
         free($2);
     }
     | BOOL IDENTIFIER '=' expression ';'
     {
         $$ = ast_declaration("bool", $2, $4);
+        semantic_declare($2, "bool");
         free($2);
     }
     ;
@@ -162,6 +172,7 @@ factor:
     }
     | IDENTIFIER
     {
+        semantic_check_identifier($1);
         $$ = ast_identifier($1);
         free($1);
     }
@@ -186,7 +197,7 @@ void yyerror(const char *s)
     printf("Syntax Error: %s\n", s);
 }
 
-int main()
+int main(void)
 {
     printf("SyntaxLab Parser Started\n");
     yyparse();
