@@ -53,26 +53,43 @@ statement_list:
     }
     ;
 
+
+
 statement:
     INT IDENTIFIER '=' expression ';'
     {
         $$ = ast_declaration("int", $2, $4);
+        semantic_check_assignment($2, "int", $4);
         semantic_declare($2, "int");
         free($2);
     }
     | FLOAT IDENTIFIER '=' expression ';'
     {
         $$ = ast_declaration("float", $2, $4);
+        semantic_check_assignment($2, "float", $4);
         semantic_declare($2, "float");
         free($2);
     }
     | BOOL IDENTIFIER '=' expression ';'
     {
         $$ = ast_declaration("bool", $2, $4);
+        semantic_check_assignment($2, "bool", $4);
         semantic_declare($2, "bool");
         free($2);
     }
+    | '{'
+      {
+          symbol_table_enter_scope();
+      }
+      statement_list
+      '}'
+      {
+          symbol_table_exit_scope();
+          $$ = $3;
+      }
     ;
+
+
 
 expression:
     logical_expression

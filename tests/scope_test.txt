@@ -1,0 +1,17 @@
+int value = 10;
+
+{
+    int value = 20;
+    int local = 5;
+    int inside = value + local;
+}
+
+int result = value + 5;
+int total = local + 5;
+
+{
+    int item = 1;
+    int item = 2;
+}
+
+int final = item;
