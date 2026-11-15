@@ -5,6 +5,7 @@
 #include "ast.h"
 #include "../semantic/semantic.h"
 #include "../symbol_table/symbol_table.h"
+#include "../codegen/codegen.h"
 
 int yylex(void);
 void yyerror(const char *s);
@@ -34,6 +35,8 @@ program:
         printf("\n========== ABSTRACT SYNTAX TREE ==========\n");
         ast_print($1);
         printf("==========================================\n");
+
+        codegen_generate($1);
 
         symbol_table_print();
 

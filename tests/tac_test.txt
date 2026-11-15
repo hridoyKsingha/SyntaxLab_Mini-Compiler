@@ -1,0 +1,8 @@
+int age = 25;
+int total = 10 + 5 * 2;
+float price = 10.5;
+float amount = age + price;
+bool isAdult = age >= 18;
+bool valid = true;
+bool result = valid && isAdult;
+bool status = !(age < 18 || age == 20);
