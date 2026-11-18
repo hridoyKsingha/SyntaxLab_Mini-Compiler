@@ -17,15 +17,19 @@ void yyerror(const char *s);
 }
 
 %token INT FLOAT BOOL TRUE FALSE
+%token IF ELSE WHILE PRINT
 %token <text> NUMBER IDENTIFIER
 %token EQ NE GE LE AND OR NOT
 
-%type <node> program statement_list statement
+%type <node> program statement_list statement block
 %type <node> expression logical_expression logical_term
 %type <node> unary_expression relational_expression
 %type <node> arithmetic_expression term factor
 
 %type <text> relational_operator
+
+%nonassoc LOWER_THAN_ELSE
+%nonassoc ELSE
 
 %%
 
@@ -46,17 +50,15 @@ program:
     ;
 
 statement_list:
-    statement
+    %empty
     {
-        $$ = $1;
+        $$ = NULL;
     }
     | statement_list statement
     {
         $$ = ast_append($1, $2);
     }
     ;
-
-
 
 statement:
     INT IDENTIFIER '=' expression ';'
@@ -80,19 +82,50 @@ statement:
         semantic_declare($2, "bool");
         free($2);
     }
-    | '{'
-      {
-          symbol_table_enter_scope();
-      }
-      statement_list
-      '}'
-      {
-          symbol_table_exit_scope();
-          $$ = $3;
-      }
+    | IDENTIFIER '=' expression ';'
+    {
+        $$ = ast_assignment($1, $3);
+        semantic_check_variable_assignment($1, $3);
+        free($1);
+    }
+    | PRINT '(' expression ')' ';'
+{
+    $$ = ast_print_statement($3);
+}
+
+    | IF '(' expression ')' statement %prec LOWER_THAN_ELSE
+    {
+        semantic_check_condition($3);
+        $$ = ast_if($3, $5, NULL);
+    }
+    | IF '(' expression ')' statement ELSE statement
+    {
+        semantic_check_condition($3);
+        $$ = ast_if($3, $5, $7);
+    }
+    | WHILE '(' expression ')' statement
+    {
+        semantic_check_condition($3);
+        $$ = ast_while($3, $5);
+    }
+    | block
+    {
+        $$ = $1;
+    }
     ;
 
-
+block:
+    '{'
+    {
+        symbol_table_enter_scope();
+    }
+    statement_list
+    '}'
+    {
+        symbol_table_exit_scope();
+        $$ = ast_block($3);
+    }
+    ;
 
 expression:
     logical_expression

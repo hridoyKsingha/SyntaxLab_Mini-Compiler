@@ -11,53 +11,26 @@
 
 %%
 
-"int" {
-    return INT;
-}
+"int"       { return INT; }
+"float"     { return FLOAT; }
+"bool"      { return BOOL; }
 
-"float" {
-    return FLOAT;
-}
+"if"        { return IF; }
+"else"      { return ELSE; }
+"while"     { return WHILE; }
+"print"     { return PRINT; }
 
-"bool" {
-    return BOOL;
-}
+"true"      { return TRUE; }
+"false"     { return FALSE; }
 
-"true" {
-    return TRUE;
-}
+"=="        { return EQ; }
+"!="        { return NE; }
+">="        { return GE; }
+"<="        { return LE; }
 
-"false" {
-    return FALSE;
-}
-
-"==" {
-    return EQ;
-}
-
-"!=" {
-    return NE;
-}
-
-">=" {
-    return GE;
-}
-
-"<=" {
-    return LE;
-}
-
-"&&" {
-    return AND;
-}
-
-"||" {
-    return OR;
-}
-
-"!" {
-    return NOT;
-}
+"&&"        { return AND; }
+"||"        { return OR; }
+"!"         { return NOT; }
 
 [0-9]+\.[0-9]+ {
     yylval.text = strdup(yytext);
