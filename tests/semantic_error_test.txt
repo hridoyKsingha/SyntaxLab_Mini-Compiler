@@ -1,0 +1,17 @@
+int age = 20;
+
+int age = 30;
+
+score = 10;
+
+bool active = 10;
+
+int count = 5;
+
+count = 2.5;
+
+if (count) {
+    print(count);
+}
+
+print(missing);
